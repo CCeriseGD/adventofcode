@@ -7,15 +7,16 @@ for dir, num in input.linematch("([LR])(%d+)") do
         total2 = total2 + math.floor(num / 100)
         num = num % 100
     end
-    local step = dir == "R" and 1 or -1
-    for i = 1, num do
-        dial = (dial + step) % 100
-        if dial == 0 then
-            total2 = total2 + 1
-        end
+    num = dir == "R" and num or -num
+    local prevdial = dial
+    dial = dial + num
+    if dial % 100 ~= dial and prevdial ~= 0 and dial % 100 ~= 0 then
+        total2 = total2 + 1
     end
+    dial = dial % 100
     if dial == 0 then
         total1 = total1 + 1
+        total2 = total2 + 1
     end
 end
 output.part1(total1)
